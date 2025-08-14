@@ -1,0 +1,56 @@
+generator client {
+    provider = "prisma-client-js"
+    previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+    provider = "sqlserver"
+    url      = env("DATABASE_URL")
+    schemas  = ["seguridad","maestros"] 
+}
+
+///////////// SEGURIDAD
+model Usuario {
+    nIdUsuario     Int      @id @default(autoincrement())
+    sUsuario       String   @db.VarChar(50)
+    sPassword      Bytes
+    bActivo        Boolean
+    nIdTipoUsuario Int
+    nIdPerDet      Int?
+    nIdPersona     Int?
+    bChangePassword Boolean
+    
+    @@schema("seguridad")
+}
+
+
+
+////////////// MAESTROS
+model Persona {
+  nIdPersona       Int     @id @default(autoincrement())
+  nIdTipo          Int
+  sPriNombre       String?
+  sSegNombre       String?
+  sApePaterno      String?
+  sApeMaterno      String?
+  sNombreCompleto  String?
+  dFechaNac        DateTime?
+  nIdUbigeoNac     Int?
+  nIdGenero        Int?
+  nIdEstadoCivil   Int?
+  sCorreo          String?  @db.VarChar(50)
+  sCelular         String?  @db.VarChar(50)
+  sCelular2        String?  @db.VarChar(50)
+  sTelefono        String?  @db.VarChar(50)
+  sDNI             String?  @db.VarChar(8)
+  sCE              String?  @db.VarChar(12)
+  sRUC             String?  @db.VarChar(11)
+  nIdUsuario_crea  Int
+  dFecha_crea      DateTime
+  nIdUsuario_mod   Int?
+  dFecha_mod       DateTime?
+  Id_Old           Int?
+  
+  @@schema("maestros")
+  @@map("Persona")
+}
